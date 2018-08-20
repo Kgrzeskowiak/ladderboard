@@ -4,9 +4,18 @@ constructor(root){
     this.panels = [];
     this.root = root;
 }
-    sendAction()
+    sendAction(params)
     {
-
+        function searchPanel(element)
+        {
+            if(element.name == params.to)
+            {
+            return element
+            }
+        }
+        var xxx = this.panels(searchPanel);
+        //to niestety nie chodzi. Szukam sposobu jak uzyskac wlasciwy adres nowego obiektu.
+      
     }
     registerPanel(app)
     {
