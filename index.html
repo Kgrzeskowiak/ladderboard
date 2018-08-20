@@ -1,0 +1,22 @@
+
+<head>
+    <script src = "application.js"></script>
+    <script src = "panel.js"></script>
+</head>
+<body>
+    <div id="appRoot">
+
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", event => 
+        {
+            var root = document.getElementById("appRoot")
+            var app = new Application(root);
+            app.registerPanel(new PanelA(app));
+            app.registerPanel(new PanelB(app));
+            app.registerPanel(new PanelC(app));
+            app.start();
+        })
+    </script>
+
+</body>
