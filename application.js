@@ -1,12 +1,30 @@
 class Application
 {
-constructor(root){
+constructor(root, db){
     this.panels = {};
     this.root = root;
+    this.activePanel = null;
+    this.db = db;
 }
-    sendAction(params)
+    sendAction(actionName)
     {
-          this.panels[params.to].show(this.root)
+        var newPanel = null;
+          if (actionName == "ConfigurationPanelRequested")
+          {
+              newPanel = this.panels["ConfigurationPanel"];
+          }
+          if (actionName == "ChartPanelRequested")
+          {
+              newPanel = this.panels["ChartPanel"];
+          }
+          if (actionName == "StartPanelRequested")
+          {
+              newPanel = this.panels["StartPanel"];
+          }
+        this.activePanel.remove(this.root)  
+        this.activePanel = newPanel;
+        newPanel.show(this.root);
+        
     }
     registerPanel(panel)
     {
@@ -14,6 +32,7 @@ constructor(root){
     }
     start()
     {
-        this.panels["PanelA"].show(this.root);
+        this.panels["StartPanel"].show(this.root);
+        this.activePanel = this.panels["StartPanel"];
     }
 }
