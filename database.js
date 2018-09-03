@@ -13,8 +13,13 @@ returnTeams()
 {
     return this._teamList;
 };
-removeTeam()
+removeTeam(team)
 {
-    
+    function findTeam(element)
+    {
+        return element.name == team;
+    }
+    var idxTeam = this._teamList.findIndex(findTeam)
+    console.log(idxTeam);
 }
 };

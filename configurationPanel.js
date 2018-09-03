@@ -49,6 +49,10 @@ constructor(application,db)
         removeButton.classList.add("btn");
         removeButton.appendChild(document.createElement("i"));
         (removeButton.firstElementChild).classList.add('fa' ,'fa-trash');
+        removeButton.addEventListener("click", event => 
+        {
+            this.db.removeTeam(event.path[3].firstElementChild.textContent)
+        })
         })
         };
             
