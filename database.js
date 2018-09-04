@@ -20,6 +20,6 @@ removeTeam(team)
         return element.name == team;
     }
     var idxTeam = this._teamList.findIndex(findTeam)
-    console.log(idxTeam);
+    this._teamList.splice(idxTeam,1);
 }
 };
