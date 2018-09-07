@@ -13,7 +13,7 @@ constructor(application,db)
         var templateClone = document.importNode(template.content, true);
         var buttonC = templateClone.querySelector("[data-name='ChartPanelButton']");
         var buttonA = templateClone.querySelector("[data-name='StartPanelButton']");
-        var addTeamButton = templateClone.querySelector("[data-name=AddNewTeamButton']");
+        var addTeamButton = templateClone.querySelector("[data-name='AddTeamButton']");
         root.appendChild(templateClone);
         this.refreshTable(root);
         buttonC.addEventListener("click", event => 
@@ -32,7 +32,7 @@ constructor(application,db)
     }
     refreshTable(root)
     {
-        var teamList = this.db.returnTeams();
+        var teamList = this.db.getTeams();
         var tableRef = root.querySelector("table");
         var tbody = tableRef.querySelector("tbody");
         var rowsList = []; //walke z klucz-wartosc uwazam za przegrana, chcialem by kluczem byl button i zawsze dodawalo mi ten sam...
