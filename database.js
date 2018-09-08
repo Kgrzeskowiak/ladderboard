@@ -3,24 +3,33 @@ class Database
     constructor()
 {
     this._teamList = [];
+    this.tempId = [];
     this.id = 0;
-    this.getTeamsFromDb();
 }
-addNewTeam(newName)
+getNewId()
 {
-    this._teamList.push({id : this.id++, name : newName});
-    this.addTeamToDb(this._teamList[this._teamList.length-1])
+    this.tempId = [];
+    this._teamList.forEach(team =>
+    {
+        this.tempId.push(team.id);
+        this.tempId.sort((a, b) => b - a);
+        this.id = this.tempId[0];
+    })
+    if (this.tempId.length >0)
+    { return (this.tempId[0]+1);}
+    else 
+    { return 1; }
 }
-getTeams(teams)
+updateLocalTeamList(teamList)
 {
-    var teamList = JSON.parse(teams)
-    console.log(teamList);
+    teamList = JSON.parse(teamList)
+    this._teamList = [];
     teamList.Items.forEach(team =>
     {
-        this._teamList.push({id : team.id, name : team.TeamName});
+        this._teamList.push({id : parseInt(team.id), name : team.TeamName});
     })
     return this._teamList;
-};
+}
 removeTeam(team)
 {
     function findTeam(element)
@@ -28,42 +37,57 @@ removeTeam(team)
         return element.name == team;
     }
     var idxTeam = this._teamList.findIndex(findTeam)
-    this._teamList.splice(idxTeam,1);
-    document.getElementById("output").innerHTML
+    var Promise1 = new Promise((resolve, reject) => 
+    {   
+        const xhr = new XMLHttpRequest();
+        xhr.open("DELETE", apiAdress);
+        xhr.setRequestHeader("x-api-key", apiKey);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = () => resolve(xhr.responseText);
+        xhr.onerror = () => reject(xhr.statusText);
+        var jsonResult = 
+        {
+        "TableName": "foo", 
+        "Key": {"id": this._teamList[idxTeam].id.toString()}
+        }
+        xhr.send(JSON.stringify(jsonResult));
+        this.getTeamsFromDb();
+    })
 }
 getTeamsFromDb()
 {
-        var Promise1 = new Promise((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.open("GET", "https://o6f3mpwcoj.execute-api.us-east-2.amazonaws.com/default/ladderBoardDB?TableName=foo");
-          xhr.setRequestHeader("x-api-key", apiKey);
-          xhr.onload = () => resolve(xhr.responseText);
-          xhr.onerror = () => reject(xhr.statusText);
-          xhr.send();
+    var Promise1 = new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", apiAdress);
+        xhr.setRequestHeader("x-api-key", apiKey);
+        xhr.onload = () => resolve(xhr.responseText);
+        xhr.onerror = () => reject(xhr.statusText);
+        xhr.send();
         });
-        Promise1.then(value => {
-            var teamList = JSON.parse(value)
-            console.log(teamList);
-            this._teamList = [];
-            teamList.Items.forEach(team =>
-            {
-                this._teamList.push({id : team.id, name : team.TeamName});
-            })
+        Promise1.then(teamList => {
+            return this.updateLocalTeamList(teamList);
         })
-        return this._teamList;
+        return Promise1;
         };
-addTeamToDb(team)
+addTeamToDb(newName)
 {
+    var id = this.getNewId()
+    var PromiseAddTeam = new Promise((resolve, reject) => 
+    {
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://o6f3mpwcoj.execute-api.us-east-2.amazonaws.com/default/ladderBoardDB?TableName=foo");
+    xhr.open("POST", apiAdress);
     xhr.setRequestHeader("x-api-key", apiKey);
     xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = () => resolve(xhr.responseText);
+    xhr.onerror = () => reject(xhr.statusText);
     var jsonResult = 
     {
     "TableName": "foo", 
-    "Item": {"id":team.id.toString(),"TeamName":team.name.toString()}
+    "Item": {"id": id.toString(),"TeamName":newName.toString()}
     }
     xhr.send(JSON.stringify(jsonResult));
-   
+    this.getTeamsFromDb();
+    });
+    return PromiseAddTeam;
 }
 };

@@ -8,12 +8,16 @@
     <script src = "chartPanel.js"></script>
     <script src = "database.js"></script>
     <script src = "awsApiKey.js"></script>
-    <link rel = "stylesheet" href = "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel = "stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="overlay.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
 body {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+hide {
+    display: none;
 }
     </style>
 </head>
@@ -22,7 +26,7 @@ body {
     </div>
 
     <template id="ConfigurationPage">
-        
+        <div class="loading" data-name="loader"></div>
             <div class="row">
                 <p class="h4">Ekran konfiguracji</p>
                 </div>
