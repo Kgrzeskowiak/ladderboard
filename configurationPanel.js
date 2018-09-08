@@ -32,10 +32,15 @@ constructor(application,db)
     }
     refreshTable(root)
     {
-        var teamList = this.db.getTeams();
+        var Promise2 = new Promise((resolve, reject) => {
+            var teamList = this.db.getTeamsFromDb();
+            resolve(teamList);  
+        })
+        Promise2.then(teamList =>
+        {
         var tableRef = root.querySelector("table");
         var tbody = tableRef.querySelector("tbody");
-        var rowsList = []; //walke z klucz-wartosc uwazam za przegrana, chcialem by kluczem byl button i zawsze dodawalo mi ten sam...
+        var rowsList = [];
         while (tbody.firstElementChild)
         {
            tbody.removeChild(tbody.firstElementChild)
@@ -63,10 +68,9 @@ constructor(application,db)
         })
         })
         };
-    }
+    })};
     sendTeamForRemoval(rowsList, removeButton)
     {
-        //chcialem sie popisac indexOf ale cos slabo dziala na takim arrayu
         rowsList.forEach(row => 
             {
                 if (row.button == removeButton)
