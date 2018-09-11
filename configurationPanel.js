@@ -29,10 +29,10 @@ constructor(application,db)
     addTeamButton.addEventListener("click", event =>
     {
         var promise = this.db.addTeamToDb(root.querySelector("input").value);
-        promise = promise.then()
+        promise = promise.then(() =>
         {
         this.refreshTable(root);
-        }
+        })
     })
     }
     refreshTable(root,loader)

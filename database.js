@@ -86,7 +86,7 @@ addTeamToDb(newName)
     "Item": {"id": id.toString(),"TeamName":newName.toString()}
     }
     xhr.send(JSON.stringify(jsonResult));
-    this.getTeamsFromDb();
+   // this.getTeamsFromDb();
     });
     return PromiseAddTeam;
 }

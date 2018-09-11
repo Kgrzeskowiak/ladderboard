@@ -7,12 +7,22 @@ class StartPanel extends Panel{
 
     show(root)
     {
-      root.innerHTML = "<p>Jesteś na formularzu A</p><br><button>Przejdź do konfiguracji</button>"
-      var button = root.querySelector("button");
-    
-      button.addEventListener("click", event =>
+      var template = document.querySelector("#StartPage");
+      var templateClone = document.importNode(template.content, true);
+      var configurationButton = templateClone.querySelector("[data-name='ConfigurationPanelButton']");
+      var gameHandler = templateClone.querySelector("[data-name='GameHandler']");
+      var startGameButton = gameHandler.querySelector("button");
+      root.appendChild(templateClone);
+      var clock = new Countdown()
+      configurationButton.addEventListener("click", event =>
     {
         this.app.sendAction("ConfigurationPanelRequested");   
     })
+    startGameButton.addEventListener("click", event =>
+    {
+        var gameDuration = gameHandler.querySelector("input").value;
+        clock.initializeClock(gameDuration);
+    })
+      
     }
 };
