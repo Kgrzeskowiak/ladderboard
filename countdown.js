@@ -1,30 +1,29 @@
 class Countdown{
     constructor()
     {
+        var clock = document.getElementById("clockdiv");
+        this.minutes = clock.querySelector(".minutes");
+        this.seconds = clock.querySelector(".seconds"); 
+        this.counter;
     }
-initializeClock(gameDuration, action)
+startTimer(gameDuration)
 {
-    var clock = document.getElementById("clockdiv")
-    var minutes = clock.querySelector(".minutes");
-    var seconds = clock.querySelector(".seconds"); 
-    var startCounting = setInterval(counting, 1000);
     gameDuration = Math.floor(gameDuration * 60);
-        function counting()
+    this.counter = setInterval(() =>
+    {
+    this.minutes.innerHTML = Math.floor(gameDuration / 60);
+    this.seconds.innerHTML = Math.floor(gameDuration % 60);
+    gameDuration = gameDuration - 1;
+        if (gameDuration <= 0)
         {
-        gameDuration = gameDuration -1;
-        minutes.innerHTML = Math.floor(gameDuration / 60);
-        seconds.innerHTML = Math.floor(gameDuration % 60);
-            if (gameDuration <= 0)
-            {
-            clearInterval(startCounting);
-            }
-            if (action == "stop")
-            {
-            clearInterval(startCounting -1);
-            minutes.innerHTML = 0;
-            seconds.innerHTML = 0;
-            }
+        clearInterval(this.counter);
         }
-} 
+    }, 1000);
 }
- 
+stopTimer()
+{
+    clearInterval(this.counter);
+    this.minutes.innerHTML = 0;
+    this.seconds.innerHTML = 0;
+}
+}

@@ -6,6 +6,10 @@ class Database
     this.tempId = [];
     this.id = 0;
 }
+getTeams()
+{
+    return this._teamList;
+}
 getNewId()
 {
     this.tempId = [];
@@ -52,6 +56,7 @@ removeTeam(team)
         }
         xhr.send(JSON.stringify(jsonResult));
         this.getTeamsFromDb();
+        return Promise1;
     })
 }
 getTeamsFromDb()
@@ -90,4 +95,5 @@ addTeamToDb(newName)
     });
     return PromiseAddTeam;
 }
+
 };
