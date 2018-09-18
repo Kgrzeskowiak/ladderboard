@@ -17,8 +17,13 @@ class StartPanel extends Panel{
       root.appendChild(templateClone);
       gameSettingsObject.push(
         {
-            inputTeamA: document.querySelector("[data-name='TeamA']"),
-            inputTeamB: document.querySelector("[data-name='TeamB']")
+            selectElement: document.querySelector("[data-name='TeamA']").children[0],
+            errorElement: document.querySelector("[data-name='TeamA']").children[1]
+        });
+        gameSettingsObject.push(
+        {
+            selectElement: document.querySelector("[data-name='TeamB']").children[0],
+            errorElement: document.querySelector("[data-name='TeamB']").children[1]
         });
       this.setTeamsToDropdown(gameSettingsObject);
       var match = new MatchHandler();
@@ -29,7 +34,6 @@ class StartPanel extends Panel{
     })
     startGameButton.addEventListener("click", event =>
     {
-       // var inputParameters = this.getInputParameters(gameSettingsObject, gameHandler.querySelector("input").value);
         if (this.validateConfigration(gameSettingsObject, gameHandler.querySelector("input").value) == true)
         {
         match.matchStart(gameDuration, SelectedTeams);
@@ -41,33 +45,25 @@ class StartPanel extends Panel{
         match.matchStop();
     })
     }
-    getInputParameters(gameSettingsObject,gameDuration)
-    {
-        var inputParameters = [];
-    }
     setTeamsToDropdown(gameSettingsObject)
     {
         var teamList = this.db.getTeams();
         teamList.forEach(team => 
             {
-                var optionA = document.createElement("option");
-                var optionB = document.createElement("option");
-                optionA.text = team.name;
-                optionB.text = team.name; 
-                gameSettingsObject[0].inputTeamA.children[0].add(optionA);
-                gameSettingsObject[0].inputTeamB.children[0].add(optionB);
+                var teamName = team.name;
+                gameSettingsObject.forEach(object =>
+                    {
+                        var option = document.createElement("option");
+                        option.text = teamName;
+                        (object.selectElement).add(option)
+                    })
             });
     }
     validateConfigration(gameSettingsObject, gameDuration)
     {
-        //przenieść je do obiektu głównego
-        var valueTeamA = gameSettingsObject[0].inputTeamA.children[0].value;
-        var errorTeamA = gameSettingsObject[0].inputTeamA.children[1];
-        var valueTeamB = gameSettingsObject[0].inputTeamB.children[0].value;
-        var errorTeamB = gameSettingsObject[0].inputTeamB.children[1];
         var validationCorrect = true;
         var time = parseInt(gameDuration)
-        if (isNaN(time)) //dorobić ostrzezenie, pomyslec jak wyjebc gore ifów majac obiekt
+        if (isNaN(time))
         {
             validationCorrect = true;
         }
@@ -75,31 +71,19 @@ class StartPanel extends Panel{
         {
             validationCorrect = false;
         }
-        if (valueTeamA == "")
-        {
-            errorTeamA.classList.add("invalid");
-            validationCorrect = false;
-        }
-        else
-        {
-            errorTeamA.classList.remove("invalid");
-            validationCorrect = true;
-        }
-        if (valueTeamB == "")
-        {
-            errorTeamB.classList.add("invalid");
-            validationCorrect = false;
-        }
-        else
-        {
-            errorTeamB.classList.remove("invalid");
-            validationCorrect = true;
-        }
-        if (valueTeamA == valueTeamB)
-        {
-            errorTeamA.classList.add("invalid");
-            errorTeamB.classList.add("invalid");
-        }
+        gameSettingsObject.forEach(team =>
+            {
+                if (team.selectElement.value == "")
+                {
+                    team.errorElement.classList.add("invalid");
+                    validationCorrect = false;
+                }
+                else
+                {
+                    team.errorElement.classList.remove("invalid");
+                    validationCorrect = true;
+                }
+            })
         return validationCorrect;
     } 
 };
