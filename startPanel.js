@@ -7,16 +7,20 @@ class StartPanel extends Panel{
     }
     show(root)
     {
+      var gameSettingsObject = [];
       var template = document.querySelector("#StartPage");
       var templateClone = document.importNode(template.content, true);
       var configurationButton = templateClone.querySelector("[data-name='ConfigurationPanelButton']");
       var gameHandler = templateClone.querySelector("[data-name='GameHandler']");
       var startGameButton = gameHandler.querySelector("[data-name='StartGame']");
       var stopGameButton = gameHandler.querySelector("[data-name='StopGame']");
-      var teamA = templateClone.querySelector("[data-name='TeamA']");
-      var teamB = templateClone.querySelector("[data-name='TeamB']");
       root.appendChild(templateClone);
-      this.setTeamsToDropdown(teamA,teamB);
+      gameSettingsObject.push(
+        {
+            inputTeamA: document.querySelector("[data-name='TeamA']"),
+            inputTeamB: document.querySelector("[data-name='TeamB']")
+        });
+      this.setTeamsToDropdown(gameSettingsObject);
       var match = new MatchHandler();
       configurationButton.addEventListener("click", event =>
     {
@@ -25,9 +29,8 @@ class StartPanel extends Panel{
     })
     startGameButton.addEventListener("click", event =>
     {
-        var gameDuration = gameHandler.querySelector("input").value;
-        var SelectedTeams = this.collectTeams(teamA,teamB);
-        if (this.validateConfigration(gameDuration,SelectedTeams) == true)
+       // var inputParameters = this.getInputParameters(gameSettingsObject, gameHandler.querySelector("input").value);
+        if (this.validateConfigration(gameSettingsObject, gameHandler.querySelector("input").value) == true)
         {
         match.matchStart(gameDuration, SelectedTeams);
         
@@ -38,12 +41,11 @@ class StartPanel extends Panel{
         match.matchStop();
     })
     }
-    collectTeams(teamA,teamB)
+    getInputParameters(gameSettingsObject,gameDuration)
     {
-        var teams = {a:teamA.value, b:teamB.value}
-        return teams;
+        var inputParameters = [];
     }
-    setTeamsToDropdown(teamA,teamB)
+    setTeamsToDropdown(gameSettingsObject)
     {
         var teamList = this.db.getTeams();
         teamList.forEach(team => 
@@ -51,35 +53,53 @@ class StartPanel extends Panel{
                 var optionA = document.createElement("option");
                 var optionB = document.createElement("option");
                 optionA.text = team.name;
-                optionB.text = team.name
-                teamA.add(optionA);
-                teamB.add(optionB);
+                optionB.text = team.name; 
+                gameSettingsObject[0].inputTeamA.children[0].add(optionA);
+                gameSettingsObject[0].inputTeamB.children[0].add(optionB);
             });
     }
-    validateConfigration(gameDuration,SelectedTeams)
+    validateConfigration(gameSettingsObject, gameDuration)
     {
-        var flag = true;
+        //przenieść je do obiektu głównego
+        var valueTeamA = gameSettingsObject[0].inputTeamA.children[0].value;
+        var errorTeamA = gameSettingsObject[0].inputTeamA.children[1];
+        var valueTeamB = gameSettingsObject[0].inputTeamB.children[0].value;
+        var errorTeamB = gameSettingsObject[0].inputTeamB.children[1];
+        var validationCorrect = true;
         var time = parseInt(gameDuration)
-        if (isNaN(time))
+        if (isNaN(time)) //dorobić ostrzezenie, pomyslec jak wyjebc gore ifów majac obiekt
         {
-            flag = false;
+            validationCorrect = true;
         }
         else
         {
-            flag = true;
+            validationCorrect = false;
         }
-        switch (true)
+        if (valueTeamA == "")
         {
-            case SelectedTeams.a == "":
-            console.log("A nie może być puste");
-            flag = false;
-            case SelectedTeams.b == "":
-            console.log("B nie może być puste");
-            flag = false;
-            case SelectedTeams.a == SelectedTeams.b:
-            console.log("równe wartości");
-            flag = false;
+            errorTeamA.classList.add("invalid");
+            validationCorrect = false;
         }
-        return flag;
+        else
+        {
+            errorTeamA.classList.remove("invalid");
+            validationCorrect = true;
+        }
+        if (valueTeamB == "")
+        {
+            errorTeamB.classList.add("invalid");
+            validationCorrect = false;
+        }
+        else
+        {
+            errorTeamB.classList.remove("invalid");
+            validationCorrect = true;
+        }
+        if (valueTeamA == valueTeamB)
+        {
+            errorTeamA.classList.add("invalid");
+            errorTeamB.classList.add("invalid");
+        }
+        return validationCorrect;
     } 
 };
