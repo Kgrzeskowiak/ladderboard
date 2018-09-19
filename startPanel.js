@@ -35,8 +35,13 @@ class StartPanel extends Panel{
         var gameDuration = gameHandler.querySelector("input").value
         if (this.validateConfigration(teamInputsObject, gameDuration) == true)
         {
-        this.db.setMatchParameters(gameDuration, teamInputsObject);
-        this.app.sendAction("MatchPanelRequested");
+        var matchParameters = 
+        {
+            "gameDuration" : gameDuration,
+            "TeamA" : teamInputsObject[0].selectElement.value,
+            "TeamB" : teamInputsObject[1].selectElement.value
+        }
+        this.app.sendAction("GameStarted", matchParameters);
         }
     })
     stopGameButton.addEventListener("click", event =>
@@ -54,7 +59,7 @@ class StartPanel extends Panel{
                     {
                         var option = document.createElement("option");
                         option.text = teamName;
-                        (object.selectElement).add(option)
+                        object.selectElement.add(option)
                     })
             });
     }

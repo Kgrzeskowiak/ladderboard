@@ -17,12 +17,16 @@ getNewId()
     let max = Math.max(...ids);
     if (max > 0)
     {
-        return max+1;
+        this.id = max+1;
+        return this.id;
     }
     else
     {
-        return 1;
+        this.id = max;
+        return this.id;
+        
     }
+
 }
 updateLocalTeamList(teamList)
 {
@@ -41,7 +45,7 @@ removeTeam(team)
         return element.name == team;
     }
     var idxTeam = this._teamList.findIndex(findTeam)
-    var Promise1 = new Promise((resolve, reject) => 
+    var PromiseRemoval = new Promise((resolve, reject) => 
     {   
         const xhr = new XMLHttpRequest();
         xhr.open("DELETE", apiAdress);
@@ -55,9 +59,9 @@ removeTeam(team)
         "Key": {"id": this._teamList[idxTeam].id.toString()}
         }
         xhr.send(JSON.stringify(jsonResult));
-        this.getTeamsFromDb();
-        return Promise1;
+        //this.getTeamsFromDb();
     })
+    return PromiseRemoval;
 }
 getTeamsFromDb()
 {
@@ -69,14 +73,13 @@ getTeamsFromDb()
         xhr.onerror = () => reject(xhr.statusText);
         xhr.send();
         });
-        Promise1.then(teamList => {
-            return this.updateLocalTeamList(teamList);
-        })
+        // Promise1.then(teamList => {
+        //     return this.updateLocalTeamList(teamList);
+        // })
         return Promise1
         };
 addTeamToDb(newName)
 {
-    var id = this.getNewId()
     var PromiseAddTeam = new Promise((resolve, reject) => 
     {
     const xhr = new XMLHttpRequest();
@@ -88,24 +91,11 @@ addTeamToDb(newName)
     var jsonResult = 
     {
     "TableName": "foo", 
-    "Item": {"id": id.toString(),"TeamName":newName.toString()}
+    "Item": {"id": this.id.toString(),"TeamName":newName.toString()}
     }
     xhr.send(JSON.stringify(jsonResult));
    // this.getTeamsFromDb();
     });
     return PromiseAddTeam;
-}
-setMatchParameters(gameDuration, teamInputsObject)
-{
-    this.matchParameters =
-        {
-            "gameDuration" : gameDuration,
-            "TeamA" : teamInputsObject[0].selectElement.value,
-            "TeamB" : teamInputsObject[1].selectElement.value
-        }  
-}
-getMatchParameters()
-{
-    return this.matchParameters;
 }
 };

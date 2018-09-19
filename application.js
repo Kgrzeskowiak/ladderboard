@@ -6,7 +6,7 @@ constructor(root, db){
     this.activePanel = null;
     this.db = db;
 }
-    sendAction(actionName)
+    sendAction(actionName, matchParameters)
     {
         var newPanel = null;
           if (actionName == "ConfigurationPanelRequested")
@@ -21,14 +21,13 @@ constructor(root, db){
           {
               newPanel = this.panels["StartPanel"];
           }
-          if (actionName == "MatchPanelRequested")
+          if (actionName == "GameStarted")
           {
               newPanel = this.panels["MatchPanel"];
           }
         this.activePanel.remove(this.root)  
         this.activePanel = newPanel;
-        newPanel.show(this.root);
-        
+        newPanel.show(this.root, matchParameters);
     }
     registerPanel(panel)
     {

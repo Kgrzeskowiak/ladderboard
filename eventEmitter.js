@@ -1,4 +1,4 @@
-class EventEmmiter{
+class EventEmitter{
     constructor()
     {
     this.handlers = [];

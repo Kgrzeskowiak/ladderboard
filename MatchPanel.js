@@ -10,9 +10,9 @@ class MatchPanel extends Panel
        this.matchParameters = "";
        this.matchResults = "";
    }
-show(root)
+show(root, matchParameters)
 {
-    this.matchParameters = this.db.getMatchParameters();
+    this.matchParameters = matchParameters;
     var template = document.querySelector("#MatchPage");
     var templateClone = document.importNode(template.content, true);
     this.matchResults = templateClone.querySelector("[data-name='results']");

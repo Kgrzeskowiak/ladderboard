@@ -10,7 +10,7 @@
     <script src = "awsApiKey.js"></script>
     <script src = "countdown.js"></script>
     <script src = "MatchPanel.js"></script>
-    <script src = "eventEmmiter.js"></script>
+    <script src = "eventEmitter.js"></script>
     <link rel = "stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="overlay.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -131,8 +131,10 @@ p.invalid
             var db = new Database();
             var app = new Application(root, db);
             var promise = db.getTeamsFromDb();
-            promise.then(() =>
+            promise.then(teamlist =>
             {
+            db.updateLocalTeamList(teamlist);
+            db.getNewId();
             app.registerPanel(new StartPanel(app,db)); //Panel z rozpoczeciem gry
             app.registerPanel(new ConfigurationPanel(app,db)); //Panel konfiguracyjny
             app.registerPanel(new ChartPanel(app,db)); //Panel z tabela

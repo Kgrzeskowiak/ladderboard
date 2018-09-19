@@ -31,6 +31,7 @@ constructor(application,db)
         promise = promise.then(() =>
         {
         this.refreshTable(root);
+        this.db.id = +1;
         })
     })
     }
@@ -82,7 +83,12 @@ constructor(application,db)
             {
                 if (row.button == removeButton)
                 {
-                    this.db.removeTeam(row.teamName)
+                    var removeTeam = this.db.removeTeam(row.teamName);
+                    removeTeam.then( () => 
+                    {
+                        this.refreshTable();
+                    }
+                    )
                 }
             }) 
     }
