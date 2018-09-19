@@ -2,12 +2,12 @@ class StartPanel extends Panel{
     constructor(application, db)
     {
         super(application, db);
-        this.name = "StartPanel"
+        this.name = "StartPanel";
         this.db = db;
     }
     show(root)
     {
-      var gameSettingsObject = [];
+      var teamInputsObject = [];
       var template = document.querySelector("#StartPage");
       var templateClone = document.importNode(template.content, true);
       var configurationButton = templateClone.querySelector("[data-name='ConfigurationPanelButton']");
@@ -15,29 +15,28 @@ class StartPanel extends Panel{
       var startGameButton = gameHandler.querySelector("[data-name='StartGame']");
       var stopGameButton = gameHandler.querySelector("[data-name='StopGame']");
       root.appendChild(templateClone);
-      gameSettingsObject.push(
+      teamInputsObject.push(
         {
             selectElement: document.querySelector("[data-name='TeamA']").children[0],
             errorElement: document.querySelector("[data-name='TeamA']").children[1]
         });
-        gameSettingsObject.push(
+        teamInputsObject.push(
         {
             selectElement: document.querySelector("[data-name='TeamB']").children[0],
             errorElement: document.querySelector("[data-name='TeamB']").children[1]
         });
-      this.setTeamsToDropdown(gameSettingsObject);
-      var match = new MatchHandler();
+      this.setTeamsToDropdown(teamInputsObject);
       configurationButton.addEventListener("click", event =>
     {
-        this.app.sendAction("ConfigurationPanelRequested");
-        clock = null;   
+        this.app.sendAction("ConfigurationPanelRequested"); 
     })
     startGameButton.addEventListener("click", event =>
     {
-        if (this.validateConfigration(gameSettingsObject, gameHandler.querySelector("input").value) == true)
+        var gameDuration = gameHandler.querySelector("input").value
+        if (this.validateConfigration(teamInputsObject, gameDuration) == true)
         {
-        match.matchStart(gameDuration, SelectedTeams);
-        
+        this.db.setMatchParameters(gameDuration, teamInputsObject);
+        this.app.sendAction("MatchPanelRequested");
         }
     })
     stopGameButton.addEventListener("click", event =>
@@ -45,13 +44,13 @@ class StartPanel extends Panel{
         match.matchStop();
     })
     }
-    setTeamsToDropdown(gameSettingsObject)
+    setTeamsToDropdown(teamInputsObject)
     {
         var teamList = this.db.getTeams();
         teamList.forEach(team => 
             {
                 var teamName = team.name;
-                gameSettingsObject.forEach(object =>
+                teamInputsObject.forEach(object =>
                     {
                         var option = document.createElement("option");
                         option.text = teamName;
@@ -59,7 +58,7 @@ class StartPanel extends Panel{
                     })
             });
     }
-    validateConfigration(gameSettingsObject, gameDuration)
+    validateConfigration(teamInputsObject, gameDuration)
     {
         var validationCorrect = true;
         var time = parseInt(gameDuration)
@@ -71,7 +70,7 @@ class StartPanel extends Panel{
         {
             validationCorrect = false;
         }
-        gameSettingsObject.forEach(team =>
+        teamInputsObject.forEach(team =>
             {
                 if (team.selectElement.value == "")
                 {

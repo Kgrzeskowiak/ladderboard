@@ -21,6 +21,10 @@ constructor(root, db){
           {
               newPanel = this.panels["StartPanel"];
           }
+          if (actionName == "MatchPanelRequested")
+          {
+              newPanel = this.panels["MatchPanel"];
+          }
         this.activePanel.remove(this.root)  
         this.activePanel = newPanel;
         newPanel.show(this.root);

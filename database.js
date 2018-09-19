@@ -5,6 +5,7 @@ class Database
     this._teamList = [];
     this.tempId = [];
     this.id = 0;
+    this.matchParameters = "";
 }
 getTeams()
 {
@@ -12,17 +13,16 @@ getTeams()
 }
 getNewId()
 {
-    this.tempId = [];
-    this._teamList.forEach(team =>
+    let ids = this._teamList.map(team => team.id);
+    let max = Math.max(...ids);
+    if (max > 0)
     {
-        this.tempId.push(team.id);
-        this.tempId.sort((a, b) => b - a);
-        this.id = this.tempId[0];
-    })
-    if (this.tempId.length >0)
-    { return (this.tempId[0]+1);}
-    else 
-    { return 1; }
+        return max+1;
+    }
+    else
+    {
+        return 1;
+    }
 }
 updateLocalTeamList(teamList)
 {
@@ -72,7 +72,7 @@ getTeamsFromDb()
         Promise1.then(teamList => {
             return this.updateLocalTeamList(teamList);
         })
-        return Promise1;
+        return Promise1
         };
 addTeamToDb(newName)
 {
@@ -95,5 +95,17 @@ addTeamToDb(newName)
     });
     return PromiseAddTeam;
 }
-
+setMatchParameters(gameDuration, teamInputsObject)
+{
+    this.matchParameters =
+        {
+            "gameDuration" : gameDuration,
+            "TeamA" : teamInputsObject[0].selectElement.value,
+            "TeamB" : teamInputsObject[1].selectElement.value
+        }  
+}
+getMatchParameters()
+{
+    return this.matchParameters;
+}
 };

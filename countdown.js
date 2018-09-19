@@ -5,6 +5,7 @@ class Countdown{
         this.minutes = clock.querySelector(".minutes");
         this.seconds = clock.querySelector(".seconds"); 
         this.counter;
+        this.endMatchEvent = new EventEmmiter();
     }
 startTimer(gameDuration)
 {
@@ -17,6 +18,8 @@ startTimer(gameDuration)
         if (gameDuration <= 0)
         {
         clearInterval(this.counter);
+        this.seconds.innerHTML = 0;
+        this.endMatchEvent.emit();
         }
     }, 1000);
 }

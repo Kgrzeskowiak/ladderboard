@@ -6,7 +6,6 @@ constructor(application,db)
     this.name = "ConfigurationPanel";
     this.db = db;
 }
-
     show(root)
     {
         var template = document.querySelector("#ConfigurationPage"); //w przyszlosci pozbierac template do jednego obiektu
