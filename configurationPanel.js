@@ -31,17 +31,18 @@ constructor(application,db)
         promise = promise.then(() =>
         {
         this.refreshTable(root);
-        this.db.id = +1;
+        this.db.id +=1;
         })
     })
     }
-    refreshTable(root,loader)
+    refreshTable(root)
     {
-        var loader = root.querySelector("[data-name='loader']")
+        var loader = root.querySelector("[data-name='loader']");
         loader.classList.add("loading");
         var teamList = this.db.getTeamsFromDb();
         teamList = teamList.then(teamList =>
         {
+        this.db.updateLocalTeamList(teamList);
         teamList = JSON.parse(teamList)
         teamList = teamList.Items;
         loader.classList.remove("loading");
@@ -68,16 +69,14 @@ constructor(application,db)
                 button : removeButton
             }
         )
-        
         removeButton.addEventListener("click", event => 
         {
-            this.sendTeamForRemoval(rowsList, removeButton);
-            this.refreshTable(root);
+            this.sendTeamForRemoval(rowsList, removeButton, root);
         })
         })
         };
     })};
-    sendTeamForRemoval(rowsList, removeButton)
+    sendTeamForRemoval(rowsList, removeButton, root)
     {
         rowsList.forEach(row => 
             {
@@ -86,7 +85,7 @@ constructor(application,db)
                     var removeTeam = this.db.removeTeam(row.teamName);
                     removeTeam.then( () => 
                     {
-                        this.refreshTable();
+                        this.refreshTable(root);
                     }
                     )
                 }

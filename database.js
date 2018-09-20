@@ -22,11 +22,9 @@ getNewId()
     }
     else
     {
-        this.id = max;
+        this.id = 1;
         return this.id;
-        
     }
-
 }
 updateLocalTeamList(teamList)
 {
@@ -59,7 +57,6 @@ removeTeam(team)
         "Key": {"id": this._teamList[idxTeam].id.toString()}
         }
         xhr.send(JSON.stringify(jsonResult));
-        //this.getTeamsFromDb();
     })
     return PromiseRemoval;
 }
@@ -73,9 +70,6 @@ getTeamsFromDb()
         xhr.onerror = () => reject(xhr.statusText);
         xhr.send();
         });
-        // Promise1.then(teamList => {
-        //     return this.updateLocalTeamList(teamList);
-        // })
         return Promise1
         };
 addTeamToDb(newName)
@@ -94,7 +88,6 @@ addTeamToDb(newName)
     "Item": {"id": this.id.toString(),"TeamName":newName.toString()}
     }
     xhr.send(JSON.stringify(jsonResult));
-   // this.getTeamsFromDb();
     });
     return PromiseAddTeam;
 }
