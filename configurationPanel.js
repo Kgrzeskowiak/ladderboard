@@ -14,7 +14,7 @@ class ConfigurationPanel extends Panel {
     );
     root.appendChild(templateClone);
     var loader = document.querySelector("[data-name='loader']");
-    loader.classList.remove("loading");
+    //loader.classList.remove("loading");
     this.refreshTable(root);
     buttonC.addEventListener("click", event => {
       this.app.sendAction("ChartPanelRequested");
