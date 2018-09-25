@@ -5,7 +5,7 @@ class Application {
     this.activePanel = null;
     this.db = db;
   }
-  sendAction(actionName, matchParameters) {
+  sendAction(actionName, matchData) {
     var newPanel = null;
     if (actionName == "ConfigurationPanelRequested") {
       newPanel = this.panels["ConfigurationPanel"];
@@ -21,7 +21,7 @@ class Application {
     }
     this.activePanel.remove(this.root);
     this.activePanel = newPanel;
-    newPanel.show(this.root, matchParameters);
+    newPanel.show(this.root, matchData);
   }
   registerPanel(panel) {
     this.panels[panel.name] = panel;

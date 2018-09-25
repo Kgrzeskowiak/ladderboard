@@ -29,12 +29,14 @@ class StartPanel extends Panel {
     });
     startGameButton.addEventListener("click", event => {
       if (this.validateConfigration(teamInputsObject, 0.05) == true) {
-        var matchParameters = {
+        var matchData = {
           gameDuration: 0.05,
-          TeamA: teamInputsObject[0].selectElement.value,
-          TeamB: teamInputsObject[1].selectElement.value
+          nameTeamA: teamInputsObject[0].selectElement.value,
+          nameTeamB: teamInputsObject[1].selectElement.value,
+          resultTeamA : "",
+          resultTeamB : "",
         };
-        this.app.sendAction("GameStarted", matchParameters);
+        this.app.sendAction("GameStarted", matchData);
       }
     });
   }

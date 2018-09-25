@@ -5,33 +5,31 @@ class MatchPanel extends Panel {
     this.db = db;
     this.secondRound = false;
     this.matchEnded = false;
-    this.matchParameters = null;
-    this.matchResults = null;
+    this.matchData = null;
+    this.matchDb = new DatabaseMatchController(this.db);
   }
-  show(root, matchParameters) {
-    this.matchParameters = matchParameters;
+  show(root, matchData) {
+    this.matchData = matchData;
     var template = document.querySelector("#MatchPage");
     var templateClone = document.importNode(template.content, true);
     root.appendChild(templateClone);
     this.clock = new Countdown();
     this.matchStart(
-      this.matchParameters.gameDuration,
-      this.matchParameters.teamA,
-      this.matchParameters.teamB
+      this.matchData.gameDuration
     );
+   
   }
   matchStart() {
-    this.clock.startTimer(this.matchParameters.gameDuration);
+    this.clock.startTimer(this.matchData.gameDuration);
     this.clock.endMatchEvent.addListener(() => {
       if (this.clock.endMatchEvent.handlers.length > 0) {
         this.clock.endMatchEvent.handlers.splice(1);
-        console.log(this.clock.endMatchEvent);
       }
       if (this.secondRound == false && this.matchEnded == false) {
         this.startSecondRound();
       }
       if (this.secondRound && this.matchEnded == false) {
-        this.showMatchEndedModal();
+        this.showMatchEndedModal(this.matchData);
       }
     });
   }
@@ -40,24 +38,20 @@ class MatchPanel extends Panel {
     document.querySelector("#confirmButton").addEventListener("click", () => {
       this.secondRound = true;
       this.matchStart(
-        this.matchParameters.gameDuration,
-        this.matchParameters.teamA,
-        this.matchParameters.teamB
+        this.matchData.gameDuration
       );
     });
   }
   showMatchEndedModal() {
     var modal = document.querySelector("#matchEndedModal");
     var saveResultButton = modal.querySelector("[data-name='saveResultButton");
-    var startOverTimeButton = modal.querySelector(
-      "[data-name='startOverTimeButton']"
-    );
+    var startOverTimeButton = modal.querySelector( "[data-name='startOverTimeButton']");
     var divTeamA = modal.querySelector("[data-name='teamA']");
     var divTeamB = modal.querySelector("[data-name='teamB']");
     var inputA = divTeamA.querySelector("input");
     var inputB = divTeamB.querySelector("input");
-    divTeamA.querySelector("span").innerHTML = this.matchParameters.TeamA;
-    divTeamB.querySelector("span").innerHTML = this.matchParameters.TeamB;
+    divTeamA.querySelector("span").innerHTML = this.matchData.nameTeamA;
+    divTeamB.querySelector("span").innerHTML = this.matchData.nameTeamB;
     $("#matchEndedModal").modal("show");
     $(document).on("shown.bs.modal", "#matchEndedModal", function() {
       inputA.focus();
@@ -69,7 +63,9 @@ class MatchPanel extends Panel {
       this.validate(inputA, inputB, saveResultButton, startOverTimeButton);
     });
     saveResultButton.addEventListener("click", event => {
-      console.log("koniec gry");
+      this.matchData.resultTeamA = inputA.value;
+      this.matchData.resultTeamB = inputB.value;
+      this.matchDb.addResultToDb(this.matchData);
     });
     startOverTimeButton.addEventListener("click", event => {
       this.startOverTime();
@@ -77,7 +73,7 @@ class MatchPanel extends Panel {
   }
   startOverTime() {
     this.secondRound = false;
-    this.matchParameters.gameDuration = 1;
+    this.matchData.gameDuration = 1;
     this.clock.startTimer(1);
   }
   validate(inputA, inputB, saveResultButton, startOverTimeButton) {

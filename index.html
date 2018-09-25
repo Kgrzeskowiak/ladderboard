@@ -6,7 +6,8 @@
     <script src="startPanel.js"></script>
     <script src="configurationPanel.js"></script>
     <script src="chartPanel.js"></script>
-    <script src="database.js"></script>
+    <script src="databaseMatchController.js"></script>
+    <script src="databaseTeamController.js"></script>
     <script src="awsApiKey.js"></script>
     <script src="countdown.js"></script>
     <script src="MatchPanel.js"></script>
@@ -56,13 +57,13 @@ p.invalid
             </div>
             <div class="row">
                 <div class="my-3 p-3 bg-white rounded box-shadow">
-                <h6 class="border-bottom border-gray pb-2 mb-0">Drużyny</h6>
-                <div class="input-group mb-3">
-                    <label for="teamName">Podaj nazwę drużyny</label>
-                    <input type="text" id="teamName" data-name="teamName" placeholder="Nazwa drużyny">
-                    <p>Wartość nieprawidłowa</p>
-                    <button class="btn btn-outline-secondary btn-sm" , data-name="AddTeamButton">Dodaj</button>
-                    <table class="table table-striped">
+                    <h6 class="border-bottom border-gray pb-2 mb-0">Drużyny</h6>
+                    <div class="input-group mb-3">
+                        <label for="teamName">Podaj nazwę drużyny</label>
+                        <input type="text" id="teamName" data-name="teamName" placeholder="Nazwa drużyny">
+                        <p>Wartość nieprawidłowa</p>
+                        <button class="btn btn-outline-secondary btn-sm" , data-name="AddTeamButton">Dodaj</button>
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Tabela</th>
@@ -70,22 +71,22 @@ p.invalid
                             </thead>
                             <tbody></tbody>
                         </table>
-                </div>
-            </div>
-            </div>
-                    <div class="row">
-                        <input type="number" placeholder="Podaj czas gry" value="0.05">
                     </div>
-
                 </div>
-                <div class="mt-3">
-                    <button class="btn btn-outline-primary" data-name="ChartPanelButton">Przejdź do wyników</button>
-                    <button class="btn btn-outline-primary" data-name="StartPanelButton">Przejdź do gry</button>
-                </div>
-        
-                   
-              
             </div>
+            <div class="row">
+                <input type="number" placeholder="Podaj czas gry" value="0.05">
+            </div>
+
+        </div>
+        <div class="mt-3">
+            <button class="btn btn-outline-primary" data-name="ChartPanelButton">Przejdź do wyników</button>
+            <button class="btn btn-outline-primary" data-name="StartPanelButton">Przejdź do gry</button>
+        </div>
+
+
+
+        </div>
         </div>
         </div>
     </template>
@@ -196,15 +197,15 @@ p.invalid
     <script>
         document.addEventListener("DOMContentLoaded", event => {
             var root = document.getElementById("appRoot");
-            var db = new Database();
-            var app = new Application(root, db);
-            var promise = db.initializeDb();
+            var TeamsDb = new DatabaseTeamController();
+            var app = new Application(root, TeamsDb);
+            var promise = TeamsDb.initializeDb();
             promise.then(() => {
-                db.getNewId();
-                app.registerPanel(new StartPanel(app, db)); //Panel z rozpoczeciem gry
-                app.registerPanel(new ConfigurationPanel(app, db)); //Panel konfiguracyjny
-                app.registerPanel(new ChartPanel(app, db)); //Panel z tabela
-                app.registerPanel(new MatchPanel(app, db));//panel obslugi gry
+                TeamsDb.getNewId();
+                app.registerPanel(new StartPanel(app, TeamsDb)); //Panel z rozpoczeciem gry
+                app.registerPanel(new ConfigurationPanel(app, TeamsDb)); //Panel konfiguracyjny
+                app.registerPanel(new ChartPanel(app, TeamsDb)); //Panel z tabela
+                app.registerPanel(new MatchPanel(app, TeamsDb));//panel obslugi gry
                 app.start();
             }
             )

@@ -1,9 +1,8 @@
-class Database {
+class DatabaseTeamController {
   constructor() {
     this._teamList = [];
     this.tempId = [];
     this.id = 0;
-    this.matchParameters = "";
   }
   initializeDb() {
     var requestAsynch = this.getTeamsFromDb();
@@ -90,11 +89,11 @@ class Database {
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.onload = () => resolve(xhr.responseText);
       xhr.onerror = () => reject(xhr.statusText);
-      var jsonResult = {
+      var jsonInput = {
         TableName: "foo",
         Item: { id: this.id.toString(), TeamName: newName.toString() }
       };
-      xhr.send(JSON.stringify(jsonResult));
+      xhr.send(JSON.stringify(jsonInput));
     });
     return PromiseAddTeam;
   }
