@@ -35,7 +35,6 @@ class DatabaseTeamController {
         return element.name == teamName;
       });
       this._teamList.splice(teamIdx, 1);
-      console.log(this._teamList);
     });
     return requestAsynch;
   }

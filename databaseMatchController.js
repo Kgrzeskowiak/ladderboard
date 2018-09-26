@@ -4,12 +4,41 @@ class DatabaseMatchController {
         this.teamsDB = teamsDB;
         this.teamList = this.teamsDB.getTeams()
     }
+getMatches()
+{
+    var GetResults = new Promise ((resolve, reject) => {
+    const xhr = new XMLHttpRequest(); 
+    xhr.open("GET", apiAdressResults);
+    xhr.setRequestHeader("x-api-key", apiKey);
+    xhr.onload = () => resolve(xhr.responseText);
+    xhr.onerror = () => reject(xhr.statusText);
+    xhr.send()
+    })
+    GetResults = GetResults.then(matchListJSON => {
+        var _matchList = JSON.parse(matchListJSON)
+        return _matchList
+    })
+    return GetResults;
+}
+getIdForNewMatch()
+{
+    var asynchRequest = this.getMatches();
+    asynchRequest = asynchRequest.then(matchListParsed =>
+        {
+            var ids = matchListParsed.Items.map(element => element.id)
+            let max = Math.max(...ids);
+            return max
+        })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+    return asynchRequest
+}
 getTeamId(teamName)
 {
     var idx = this.teamList.findIndex(element => 
         {
-            teamName == element.name
+            if(teamName == element.name)
+            {
             return element;
+            }
         })
     return this.teamList[idx].id;
 }
@@ -24,9 +53,14 @@ getCurrentDate()
         return (dd+'-'+mm+'-'+yyyy);       
 }
 addResultToDb(matchData){
+    var id = 0;
+    var asynchRequest = this.getIdForNewMatch()
+    asynchRequest = asynchRequest.then(matchId =>
+    {
+        id = matchId + 1
+    })
+    asynchRequest.then(() => {
     var promiseAddNewResult = new Promise((resolve, reject) => {
-        console.log(this.teamList)
-        console.log(this.getCurrentDate())
         const xhr = new XMLHttpRequest();
         xhr.open("POST", apiAdressResults);
         xhr.setRequestHeader("x-api-key", apiKey);
@@ -34,10 +68,11 @@ addResultToDb(matchData){
         xhr.onerror = () => reject(xhr.statusText);
         var jsonInput = {
             TableName: "results",
-            Item : { id:2, idTeamA: this.getTeamId(matchData.nameTeamA), teamNameA: matchData.nameTeamA, resultTeamA: matchData.resultTeamA, idTeamB : this.getTeamId(matchData.nameTeamB), teamNameB: matchData.nameTeamB, resultTeamB: matchData.resultTeamB, date: this.getCurrentDate()}
+            Item : { id:id, idTeamA: this.getTeamId(matchData.nameTeamA), resultTeamA: matchData.resultTeamA, idTeamB : this.getTeamId(matchData.nameTeamB), resultTeamB: matchData.resultTeamB, date: this.getCurrentDate()}
         };
         xhr.send(JSON.stringify(jsonInput));
     })
     return promiseAddNewResult;
+})
 }
 }

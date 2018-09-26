@@ -1,12 +1,12 @@
 class MatchPanel extends Panel {
-  constructor(application, db) {
+  constructor(application, teamDb, matchDb) {
     super(application);
     this.name = "MatchPanel";
-    this.db = db;
+    this.db = teamDb;
     this.secondRound = false;
     this.matchEnded = false;
     this.matchData = null;
-    this.matchDb = new DatabaseMatchController(this.db);
+    this.matchDb = matchDb;
   }
   show(root, matchData) {
     this.matchData = matchData;
@@ -63,8 +63,8 @@ class MatchPanel extends Panel {
       this.validate(inputA, inputB, saveResultButton, startOverTimeButton);
     });
     saveResultButton.addEventListener("click", event => {
-      this.matchData.resultTeamA = inputA.value;
-      this.matchData.resultTeamB = inputB.value;
+      this.matchData.resultTeamA = parseInt(inputA.value);
+      this.matchData.resultTeamB = parseInt(inputB.value);
       this.matchDb.addResultToDb(this.matchData);
     });
     startOverTimeButton.addEventListener("click", event => {

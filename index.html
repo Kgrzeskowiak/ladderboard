@@ -194,18 +194,30 @@ p.invalid
         </div>
 
     </template>
+    <template id="ResultsPage">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Drużyna</th>
+                    <th>Wygrane mecze</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </template>
     <script>
         document.addEventListener("DOMContentLoaded", event => {
             var root = document.getElementById("appRoot");
             var TeamsDb = new DatabaseTeamController();
+            var MatchDb = new DatabaseMatchController(TeamsDb);
             var app = new Application(root, TeamsDb);
             var promise = TeamsDb.initializeDb();
             promise.then(() => {
                 TeamsDb.getNewId();
                 app.registerPanel(new StartPanel(app, TeamsDb)); //Panel z rozpoczeciem gry
                 app.registerPanel(new ConfigurationPanel(app, TeamsDb)); //Panel konfiguracyjny
-                app.registerPanel(new ChartPanel(app, TeamsDb)); //Panel z tabela
-                app.registerPanel(new MatchPanel(app, TeamsDb));//panel obslugi gry
+                app.registerPanel(new ChartPanel(app, TeamsDb, MatchDb)); //Panel z tabela
+                app.registerPanel(new MatchPanel(app, TeamsDb, MatchDb));//panel obslugi gry
                 app.start();
             }
             )
