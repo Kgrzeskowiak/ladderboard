@@ -20,6 +20,13 @@ class DatabaseTeamController {
   getTeams() {
     return this._teamList;
   }
+  getTeamName(teamId)
+  {
+    var team = this._teamList.find(function(element){
+      return element.id == teamId
+    })
+    return team.name;
+  }
   addTeam(team) {
     this.id += 1;
     var requestAsynch = this.addTeamToDb(team);

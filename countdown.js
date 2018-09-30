@@ -11,10 +11,12 @@ class Countdown {
     this.counter = setInterval(() => {
       this.minutes.innerHTML = Math.floor(gameDuration / 60);
       this.seconds.innerHTML = Math.floor(gameDuration % 60);
-      gameDuration = gameDuration - 1;
-      if (gameDuration <= 0) {
+      gameDuration--
+      console.log(gameDuration)
+      if (gameDuration === 0) {
+        console.log("czas uplynal");
         clearInterval(this.counter);
-        this.seconds.innerHTML = 0;
+       // this.seconds.innerHTML = 0;
         this.endMatchEvent.emit();
       }
     }, 1000);

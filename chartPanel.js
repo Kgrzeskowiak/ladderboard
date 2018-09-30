@@ -11,18 +11,20 @@ class ChartPanel extends Panel {
     var templateClone = document.importNode(template.content, true);
     root.appendChild(templateClone);
     var table = root.querySelector("table");
-    // root.innerHTML =
-    //   "<p>Jesteś na formularzu C</p><br><button>Skocz na formularz A</button>";
-    // var button = root.querySelector("button");
-    this.createResultsTable(table);
-    // button.addEventListener("click", event => {
-    //   this.app.sendAction("StartPanelRequested");
-    // });
+    var tbody = root.querySelector("tbody");
+    this.createResultsTable(table, tbody);
   }
-  createResultsTable(table) {
+  createResultsTable(tableRef,tbody) {
     var asynchPrepare = this.prepareResults();
-    asynchPrepare.then(results => {
-      console.log(results);
+    asynchPrepare.then(winnerList => {
+      let teams = Object.getOwnPropertyNames(winnerList)
+      teams.forEach(item => {
+        let teamName = this.teamsDb.getTeamName(item)
+        let newRow = tableRef.insertRow()
+        newRow.insertCell().appendChild(document.createTextNode(teamName))
+        newRow.insertCell().appendChild(document.createTextNode(winnerList[item]))
+        tbody.appendChild(newRow)
+      })
     });
   }
   prepareResults() {
