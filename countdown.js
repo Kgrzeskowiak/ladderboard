@@ -12,9 +12,7 @@ class Countdown {
       this.minutes.innerHTML = Math.floor(gameDuration / 60);
       this.seconds.innerHTML = Math.floor(gameDuration % 60);
       gameDuration--
-      console.log(gameDuration)
       if (gameDuration === 0) {
-        console.log("czas uplynal");
         clearInterval(this.counter);
        // this.seconds.innerHTML = 0;
         this.endMatchEvent.emit();

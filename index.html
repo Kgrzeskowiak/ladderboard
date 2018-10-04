@@ -12,16 +12,13 @@
     <script src="countdown.js"></script>
     <script src="MatchPanel.js"></script>
     <script src="eventEmitter.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
+    <script src="loader.js"</script></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="overlay.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <style>
         body 
 {
@@ -42,7 +39,6 @@ p.invalid
     color : red;
     font-size: small;
 }
-
     </style>
 </head>
 
@@ -55,38 +51,34 @@ p.invalid
             <div class="row">
                 <span class="h4">Konfiguracja</span>
             </div>
-            <div class="row">
-                <div class="my-3 p-3 bg-white rounded box-shadow">
-                    <h6 class="border-bottom border-gray pb-2 mb-0">Drużyny</h6>
-                    <div class="input-group mb-3">
-                        <label for="teamName">Podaj nazwę drużyny</label>
-                        <input type="text" id="teamName" data-name="teamName" placeholder="Nazwa drużyny">
-                        <p>Wartość nieprawidłowa</p>
-                        <button class="btn btn-outline-secondary btn-sm" , data-name="AddTeamButton">Dodaj</button>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Tabela</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <div class="row">
+                    <div class="col-8 pt-1">
+
+                        <h6 class="pb-2">Drużyny</h6>
+                    </div>
+                    <div class="col-4 pb-1">
+                        <button class="btn btn-outline-primary btn-sm" data-name="AddTeamButton">Dodaj</button>
                     </div>
                 </div>
+                <div class="table responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nazwa drużyny</th>
+                                <th>Akcje</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
-            <div class="row">
-                <input type="number" placeholder="Podaj czas gry" value="0.05">
-            </div>
-
+        <div class="row">
+            <input type="number" placeholder="Podaj czas gry" value="0.05">
         </div>
         <div class="mt-3">
             <button class="btn btn-outline-primary" data-name="ChartPanelButton">Przejdź do wyników</button>
             <button class="btn btn-outline-primary" data-name="StartPanelButton">Przejdź do gry</button>
-        </div>
-
-
-
-        </div>
         </div>
         </div>
     </template>
@@ -125,8 +117,7 @@ p.invalid
         </div>
     </template>
     <template id="MatchPage">
-        <div class="modal fade" id="secondRoundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true" data-show="true">
+        <div class="modal fade" id="secondRoundModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-show="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -145,8 +136,7 @@ p.invalid
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="matchEndedModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true" data-show="true">
+        <div class="modal fade" id="matchEndedModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-show="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -160,22 +150,18 @@ p.invalid
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Drużyna_1</span>
                             </div>
-                            <input type="number" id="inputA" class="form-control" placeholder="Wynik" aria-label="Wynik"
-                                aria-describedby="basic-addon1">
+                            <input type="number" id="inputA" class="form-control" placeholder="Wynik" aria-label="Wynik" aria-describedby="basic-addon1">
                         </div>
                         <div class="input-group mb-3" data-name="teamB">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Drużyna_2</span>
                             </div>
-                            <input type="number" class="form-control" placeholder="Wynik" aria-label="Wynik"
-                                aria-describedby="basic-addon1">
+                            <input type="number" class="form-control" placeholder="Wynik" aria-label="Wynik" aria-describedby="basic-addon1">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-name="startOverTimeButton" data-dismiss="modal"
-                            disabled>Dogrywka</button>
-                        <button type="button" class="btn btn-primary" data-name="saveResultButton" data-dismiss="modal"
-                            disabled>Zapisz wynik</button>
+                        <button type="button" class="btn btn-secondary" data-name="startOverTimeButton" data-dismiss="modal" disabled>Dogrywka</button>
+                        <button type="button" class="btn btn-primary" data-name="saveResultButton" data-dismiss="modal" disabled>Zapisz wynik</button>
                     </div>
                 </div>
             </div>
@@ -192,7 +178,6 @@ p.invalid
                 </div>
             </div>
         </div>
-
     </template>
     <template id="ResultsPage">
         <table class="table table-striped">
@@ -208,19 +193,23 @@ p.invalid
     <script>
         document.addEventListener("DOMContentLoaded", event => {
             var root = document.getElementById("appRoot");
-            var TeamsDb = new DatabaseTeamController();
-            var MatchDb = new DatabaseMatchController(TeamsDb);
-            var app = new Application(root, TeamsDb);
-            var promise = TeamsDb.initializeDb();
-            promise.then(() => {
-                TeamsDb.getNewId();
-                app.registerPanel(new StartPanel(app, TeamsDb)); //Panel z rozpoczeciem gry
-                app.registerPanel(new ConfigurationPanel(app, TeamsDb)); //Panel konfiguracyjny
-                app.registerPanel(new ChartPanel(app, TeamsDb, MatchDb)); //Panel z tabela
-                app.registerPanel(new MatchPanel(app, TeamsDb, MatchDb));//panel obslugi gry
-                app.start();
-            }
-            )
+            var teamsDb = new DatabaseTeamController();
+            var MatchDb = new DatabaseMatchController(teamsDb);
+            var loader = new Loader(root)
+            var app = new Application(root, teamsDb);
+            var promise = teamsDb.initializeDb();
+            promise.then((response) => {
+                if (response == "Requested resource not found") {
+                    console.log("error bazy mamy")
+                } else {
+                    teamsDb.getNewId();
+                    app.registerPanel(new StartPanel(app, teamsDb,)); //Panel z rozpoczeciem gry
+                    app.registerPanel(new ConfigurationPanel(app, teamsDb, loader)); //Panel konfiguracyjny
+                    app.registerPanel(new ChartPanel(app, teamsDb, MatchDb)); //Panel z tabela
+                    app.registerPanel(new MatchPanel(app, teamsDb, MatchDb)); //panel obslugi gry
+                    app.start();
+                }
+            })
         })
     </script>
 

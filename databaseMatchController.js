@@ -1,8 +1,8 @@
 class DatabaseMatchController {
-    constructor(teamsDB) {
+    constructor(teamsDb) {
         this.matchResult = "";
-        this.teamsDB = teamsDB;
-        this.teamList = this.teamsDB.getTeams()
+        this.teamsDb = teamsDb;
+        this.teamList = this.teamsDb.getTeams()
     }
 getMatches()
 {
