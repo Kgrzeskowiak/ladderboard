@@ -1,20 +1,27 @@
 class Countdown {
   constructor() {
     var clock = document.getElementById("clockdiv");
-    this.minutes = clock.querySelector(".minutes");
-    this.seconds = clock.querySelector(".seconds");
+    this.counterDisplay = clock.querySelector(".counterDisplay");
     this.counter;
     this.endMatchEvent = new EventEmitter();
   }
   startTimer(gameDuration) {
     gameDuration = Math.floor(gameDuration * 60);
     this.counter = setInterval(() => {
-      this.minutes.innerHTML = Math.floor(gameDuration / 60);
-      this.seconds.innerHTML = Math.floor(gameDuration % 60);
       gameDuration--
+      var seconds = Math.floor(gameDuration % 60);
+      var minutes = Math.floor(gameDuration / 60);
+      if (seconds < 10)
+      {
+        seconds = "0" + seconds;
+      }
+      if (minutes < 10)
+      {
+        minutes = "0" + minutes;
+      }
+      this.counterDisplay.innerHTML = minutes + "m" + ":" + seconds + "s"
       if (gameDuration === 0) {
         clearInterval(this.counter);
-       // this.seconds.innerHTML = 0;
         this.endMatchEvent.emit();
       }
     }, 1000);

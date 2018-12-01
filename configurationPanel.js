@@ -22,15 +22,15 @@ class ConfigurationPanel extends Panel {
       this.app.sendAction("StartPanelRequested");
     });
     addTeamButton.addEventListener("click", event => {
-      let dataButtons = this.createEditableRow(root)
-      dataButtons.removeButton.addEventListener("click", () => 
+      let rowData = this.createEditableRow(root)
+      rowData.removeButton.addEventListener("click", event => 
       {
-        while (row.firstElementChild)
-        {
-        row.removeChild(row.firstElementChild)
+        while (rowData.row.firstElementChild)
+        {  
+        rowData.row.removeChild(rowData.row.firstElementChild);
         }
       })
-      dataButtons.addButton.addEventListener("click", () => 
+      rowData.addButton.addEventListener("click", () => 
       {
         var promise = this.db.addTeam(root.querySelector("input").value);
       promise = promise.then(() => {
@@ -55,8 +55,8 @@ class ConfigurationPanel extends Panel {
     removeButton.classList.add("btn");
     removeButton.appendChild(document.createElement("i"));
     removeButton.firstElementChild.classList.add("fa", "fa-trash");
-    var dataButtons = {addButton : addButton, removeButton: removeButton}
-    return dataButtons
+    var rowData = {addButton : addButton, removeButton: removeButton, row : row}
+    return rowData
   }
   refreshTable(root) {
     var teamList = this.db.getTeams();
