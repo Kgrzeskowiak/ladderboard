@@ -66,6 +66,7 @@ class MatchPanel extends Panel {
       this.matchData.resultTeamA = parseInt(inputA.value);
       this.matchData.resultTeamB = parseInt(inputB.value);
       this.matchDb.addResultToDb(this.matchData);
+      this.app.sendAction("StartPanelRequested");
     });
     startOverTimeButton.addEventListener("click", event => {
       this.startOverTime();

@@ -8,9 +8,6 @@ class StartPanel extends Panel {
     var teamInputsObject = [];
     var template = document.querySelector("#StartPage");
     var templateClone = document.importNode(template.content, true);
-    var configurationButton = templateClone.querySelector(
-      "[data-name='ConfigurationPanelButton']"
-    );
     var gameHandler = templateClone.querySelector("[data-name='GameHandler']");
     var startGameButton = gameHandler.querySelector("[data-name='StartGame']");
     root.appendChild(templateClone);
@@ -24,9 +21,6 @@ class StartPanel extends Panel {
       errorElement: document.querySelector("[data-name='TeamB']").children[1]
     });
     this.setTeamsToDropdown(teamInputsObject);
-    configurationButton.addEventListener("click", event => {
-      this.app.sendAction("ConfigurationPanelRequested");
-    });
     startGameButton.addEventListener("click", event => {
       if (this.validateConfigration(teamInputsObject, 0.05) == true) {
         var matchData = {

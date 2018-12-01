@@ -8,19 +8,11 @@ class ConfigurationPanel extends Panel {
   show(root) {
     var template = document.querySelector("#ConfigurationPage");
     var templateClone = document.importNode(template.content, true);
-    var buttonC = templateClone.querySelector("[data-name='ChartPanelButton']");
-    var buttonA = templateClone.querySelector("[data-name='StartPanelButton']");
     var addTeamButton = templateClone.querySelector(
       "[data-name='AddTeamButton']"
     );
     root.appendChild(templateClone);
     this.refreshTable(root);
-    buttonC.addEventListener("click", event => {
-      this.app.sendAction("ChartPanelRequested");
-    });
-    buttonA.addEventListener("click", event => {
-      this.app.sendAction("StartPanelRequested");
-    });
     addTeamButton.addEventListener("click", event => {
       let rowData = this.createEditableRow(root)
       rowData.removeButton.addEventListener("click", event => 
