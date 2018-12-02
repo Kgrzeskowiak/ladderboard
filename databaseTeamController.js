@@ -28,20 +28,21 @@ class DatabaseTeamController {
     return team.name;
   }
   addTeam(team) {
-    this.id += 1;
     var requestAsynch = this.addTeamToDb(team);
     requestAsynch.then(() => {
       this._teamList.push({ id: parseInt(this.id), name: team });
     });
     return requestAsynch;
   }
-  removeTeam(teamName) {
-    var requestAsynch = this.removeTeamFromDb(teamName);
+  editTeam(newTeamName, oldValue) {
+    var requestAsynch = this.editTeamInDb(oldValue, newTeamName);
     requestAsynch.then(() => {
       var teamIdx = this._teamList.findIndex(function(element) {
-        return element.name == teamName;
+        return element.name == oldValue;
       });
-      this._teamList.splice(teamIdx, 1);
+      console.log(this._teamList);
+      this._teamList[teamIdx].name = newTeamName
+  
     });
     return requestAsynch;
   }
@@ -56,21 +57,22 @@ class DatabaseTeamController {
       return this.id;
     }
   }
-  removeTeamFromDb(team) {
+
+  editTeamInDb(oldTeam, newTeam) {
     function findTeam(element) {
-      return element.name == team;
+      return element.name == oldTeam;
     }
     var idxTeam = this._teamList.findIndex(findTeam);
     var PromiseRemoval = new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open("DELETE", apiAdress);
+      xhr.open("POST", apiAdress);
       xhr.setRequestHeader("x-api-key", apiKey);
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.onload = () => resolve(xhr.responseText);
       xhr.onerror = () => reject(xhr.statusText);
       var jsonResult = {
         TableName: "foo",
-        Key: { id: this._teamList[idxTeam].id.toString() }
+        Item: { id: (this._teamList[idxTeam].id).toString(), TeamName: newTeam.toString() }
       };
       xhr.send(JSON.stringify(jsonResult));
     });
@@ -97,7 +99,7 @@ class DatabaseTeamController {
       xhr.onerror = () => reject(xhr.statusText);
       var jsonInput = {
         TableName: "foo",
-        Item: { id: this.id.toString(), TeamName: newName.toString() }
+        Item: { id: this.id.toString(), TeamName: newName.toString()}
       };
       xhr.send(JSON.stringify(jsonInput));
     });
