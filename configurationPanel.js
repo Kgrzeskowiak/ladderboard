@@ -6,6 +6,8 @@ class ConfigurationPanel extends Panel {
     this.loader = loader;
     this.addTeamButton = "";
   }
+  //osobna klaska do template'ow 
+  //tworzenie elementow do template
   show(root) {
     var template = document.querySelector("#ConfigurationPage");
     var templateClone = document.importNode(template.content, true);
