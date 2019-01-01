@@ -44,6 +44,7 @@ class Application {
       navBarLogo.firstElementChild.remove();
       navBarLogo.appendChild(document.createElement("i"));
       navBarLogo.firstElementChild.classList.add("fas", "fa-chart-bar", "fa-2x");
+     // navBarLogo.firstElementChild.className = "fas fa-chart-bar fa-2x";
     });
     startPanelLink.addEventListener("click", event => {
       this.sendAction("StartPanelRequested");
