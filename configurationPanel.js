@@ -105,7 +105,9 @@ class ConfigurationPanel extends Panel {
     addButton.addEventListener("click", event => {
       var requestAsync = this.db.editTeam(tempInput.value, oldValue);
       requestAsync.then(() => {
+        this.addTeamButton.classList.remove("hide");
         this.refreshTable(root);
+
       });
     });
   }

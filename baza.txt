@@ -1,0 +1,18 @@
+{
+  "id": "12",
+  "TeamName": "Nosacze 2"
+}
+
+foo
+
+{
+  "date": "02-12-2018",
+  "id": 1,
+  "idTeamA": 12,
+  "idTeamB": 14,
+  "resultTeamA": 2,
+  "resultTeamB": 1
+}
+
+results
+

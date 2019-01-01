@@ -31,10 +31,6 @@
 {
     display: none;
 }
-.show
-{
-    display : block;
-}
 p 
 {
     display: none;
@@ -207,7 +203,7 @@ p.invalid
             var root = document.getElementById("appRoot");
             var teamsDb = new DatabaseTeamController();
             var MatchDb = new DatabaseMatchController(teamsDb);
-            var loader = new Loader(root)
+            var loader = new Loader(root);
             var app = new Application(root, teamsDb);
             var promise = teamsDb.initializeDb();
             promise.then((response) => {

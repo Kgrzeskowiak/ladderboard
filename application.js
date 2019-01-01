@@ -22,6 +22,7 @@ class Application {
     this.activePanel.remove(this.root);
     this.activePanel = newPanel;
     newPanel.show(this.root, matchData);
+  
   }
   registerPanel(panel) {
     this.panels[panel.name] = panel;
